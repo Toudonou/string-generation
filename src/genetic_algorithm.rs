@@ -54,9 +54,7 @@ impl IndividualTrait for Individual {
 
         (0..self.genome.len()).for_each(|i| {
             let prob = thread_rng().gen::<f32>();
-            if prob < 0.45 {
-                individual.genome[i] = self.genome[i];
-            } else if prob < 0.9 {
+            if 0.45 < prob && prob < 0.9 {
                 individual.genome[i] = parent2.genome[i];
             } else {
                 individual.genome[i] = mutated_genes();

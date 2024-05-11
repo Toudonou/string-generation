@@ -21,7 +21,7 @@ fn simulation(target: &str, population_size: &u32) {
 
     loop {
         println!(
-            "Generation : {generation}\t String : {}\t Fitness Score : {}",
+            "Generation : {generation} String : {} Fitness Score : {}",
             String::from_utf8_lossy(&population[0].get_genome()),
             population[0].get_fitness()
         );
@@ -50,15 +50,16 @@ fn simulation(target: &str, population_size: &u32) {
         // Saving the 10% the best individuals of the population
         // the lower the fitness score is, the better this individual is
         // so the 10% the best individuals are on the beginning of the vector
-        let size: u32 = (0.1f32 * *population_size as f32) as u32;
+        let mut size: u32 = (0.1f32 * *population_size as f32) as u32;
         (0..size).for_each(|i| {
             new_population.push(population[i as usize].clone());
         });
 
-        // Generate the rest of the population based on the other 90%
-        (size..*population_size).for_each(|_| {
-            let parent1 = population[thread_rng().gen_range(0..=size) as usize].clone();
-            let parent2 = population[thread_rng().gen_range(0..=size) as usize].clone();
+        // Generate the rest of the population based on the 50% fitness individuals
+        size = (0.9f32 * *population_size as f32) as u32;
+        (0..=size).for_each(|_| {
+            let parent1 = population[thread_rng().gen_range(0..50) as usize].clone();
+            let parent2 = population[thread_rng().gen_range(0..50) as usize].clone();
             new_population.push(parent1.mate(&parent2));
         });
 

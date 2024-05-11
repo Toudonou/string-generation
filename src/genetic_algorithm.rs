@@ -1,7 +1,7 @@
 use rand::{thread_rng, Rng};
 
 const GENES: [u8; 86] =
-    *b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890, '.-;:_!\"#%&/()=?@${[]}";
+    *b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 1234567890, .-;:_!\"#%&/()=?@${[]}";
 
 /// Produce a muated gene
 pub fn mutated_genes() -> u8 {
@@ -48,11 +48,15 @@ impl IndividualTrait for Individual {
         };
 
         (0..self.genome.len()).for_each(|i| {
-            let prob = thread_rng().gen::<f32>();
-            if 0.45 < prob && prob < 0.9 {
-                individual.genome[i] = parent2.genome[i];
-            } else {
-                individual.genome[i] = mutated_genes();
+            // Preserve the good genes
+            // More efficient
+            if self.genome[i] != self.target[i] {
+                let prob = thread_rng().gen::<f32>();
+                if 0.45f32 <= prob && prob < 0.9f32 {
+                    individual.genome[i] = parent2.genome[i];
+                } else {
+                    individual.genome[i] = mutated_genes();
+                }
             }
         });
         individual.cal_fitness();

@@ -3,14 +3,9 @@ use rand::{thread_rng, Rng};
 const GENES: [u8; 86] =
     *b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890, '.-;:_!\"#%&/()=?@${[]}";
 
-/// Function for generating random unseigned number : start <= number < end
-fn random_number(start: u32, end: u32) -> u32 {
-    thread_rng().gen_range(start..end)
-}
-
 /// Produce a muated gene
 pub fn mutated_genes() -> u8 {
-    let rand_index = random_number(0, GENES.len() as u32) as usize;
+    let rand_index = thread_rng().gen_range(0..(GENES.len() as u32)) as usize;
     GENES[rand_index]
 }
 
